@@ -9,10 +9,10 @@ const amount = document.getElementById("amount")
 const currency = document.getElementById("currency")
 const footer = document.querySelector("main footer")
 const description = document.getElementById("description")
+const result = document.getElementById("result")
 
 // Manipulando o input amount para receber somente números.
 amount.addEventListener("input", () => {
-    console.log(amount.value);
     const hasCharactersRegex = /\D+/g
 
     amount.value = amount.value.replace(hasCharactersRegex, "")
@@ -47,13 +47,31 @@ function convertCurrency(amount, price, symbol) {
 // Função paraq converter moeda.
 function convertCurrency(amount, price, symbol) {
     try {
-        // Exibe a cotação da moeda selicionado.]
+        // Exibe a cotação da moeda selicionado.
         description.textContent = `${symbol} 1 = ${formatCurrencyBRL(price)}`
+
+        // calcula total.
+        let total = amount * price
+
+        // Verifica se o resultado não é um número
+        if (isNaN(total)) {
+            return alert("Por favor, digite o valor corretamente para converter.")
+        }
+
+        // Formata o valor total.
+        total = formatCurrencyBRL(total).replace("R$", "")
+        
+        // Exibe resultado total.
+        result.textContent = `${total} Reais`
 
         // Aplica a classe que existe o footer para mostrar resultado.
         footer.classList.add("show-result")
     } catch (error) {
-        console.log(error);
+        // Remove a classe do footer removendo ele da tela.
+        footer.classList.remove("show-result")
+       
+        console.log(error); 
+        alert("Não foi possível converter. Tente novamente mais tarde")
     } 
 }
 
